@@ -1,0 +1,105 @@
+#include <WiFi.h>
+#include <ESP32Servo.h>
+
+// --- CONFIGURAÇÃO DA REDE ---
+const char* ssid = "botaowifiaqui";
+const char* password = "botaasenhadowifiaqui";
+
+WiFiServer server(8080);
+
+// --- SERVOS (SG90) ---
+Servo servoX;  // Servo 1
+Servo servoY;  // Servo 2
+
+const int servoX_pin = 2;   // OK para SG90
+const int servoY_pin = 4;   // Troquei o pino porque o 3 é RX (não use)
+
+// Faixa segura para SG90
+const int ANG_MIN = 10;
+const int ANG_MAX = 170;
+
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+
+  Serial.println("Conectando WiFi...");
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nWiFi conectado!");
+  Serial.println(WiFi.localIP());
+
+  server.begin();
+  Serial.println("Servidor TCP iniciado na porta 8080.");
+
+  // SG90 -> configurar PWM 50 Hz, 500us a 2400us
+  servoX.attach(servoX_pin, 500, 2400);
+  servoY.attach(servoY_pin, 500, 2400);
+
+  servoX.write(90);
+  servoY.write(90);
+}
+
+// --- Movimentos seguros para SG90 ---
+void moverServoX() {
+  Serial.println("Movendo servo X (um dedo)...");
+  servoX.write(ANG_MIN);
+  delay(800);
+  servoX.write(ANG_MAX);
+  delay(800);
+  servoX.write(90);
+}
+
+void moverServoY() {
+  Serial.println("Movendo servo Y (dois dedos)...");
+  servoY.write(ANG_MAX);
+  delay(800);
+  servoY.write(ANG_MIN);
+  delay(800);
+  servoY.write(90);
+}
+
+void loop() {
+  WiFiClient client = server.available();
+
+  if (client) {
+    Serial.println("Cliente conectado!");
+    String data = "";
+
+    while (client.connected()) {
+      while (client.available()) {
+        char c = client.read();
+
+        if (c == '\n') {
+          data.trim();
+
+          if (data.length() > 0) {
+            Serial.print("Gesto recebido: ");
+            Serial.println(data);
+
+            if (data.equalsIgnoreCase("Um dedo")) {
+              moverServoX();
+            }
+            else if (data.equalsIgnoreCase("Dois dedos")) {
+              moverServoY();
+            }
+            else {
+              Serial.println("Gesto não reconhecido.");
+            }
+          }
+          data = "";
+        }
+        else {
+          data += c;
+        }
+      }
+      delay(10);
+    }
+
+    client.stop();
+    Serial.println("Cliente desconectado.");
+  }
+}
