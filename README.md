@@ -25,7 +25,7 @@ O objetivo principal é criar uma interface **intuitiva e natural** entre o ser 
 1. **Kinect**
    Foi utilizado o Kinect V2 do Xbox One.
 
-2. **SDK do Kinect**
+2. **Open CV**
   Ferramenta utilizada para controlar, capturar e rastrear movimentos utilizando o Kinect.
 
 3. **Kinect Studio**
