@@ -42,7 +42,7 @@ O objetivo principal é criar uma interface **intuitiva e natural** entre o ser 
 ---
 ## Codigos
 
-1. Foi criado um codigo para o esp32 no qual os movimentos captados pelo kinect são enviado para o servo motor permitindu-o movimentar. O codigo se encontra no branch
+1. Foi criado um codigo para o esp32 no qual os movimentos captados pelo kinect são enviado para o servo motor permitindu-o movimentar. O codigo no arquivo "Código ESP32"
 
 ## 👤 Autores
 
