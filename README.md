@@ -42,7 +42,7 @@ O objetivo principal é criar uma interface **intuitiva e natural** entre o ser 
 ---
 ## Codigos
 
-1.Inicialmente foi criado 3 codigos para fazer o Kinect detectar o movimento das mãos e salvar esses dados num banco de dados. Os codigos se encontram no arquivo.
+1.Inicialmente foi criado 3 codigos para fazer o Kinect detectar o movimento das mãos e salvar esses dados num banco de dados. Os codigos estão nos arquivos "Kinect+WIFI", "Database" e "Ler Database".
 2. Foi criado um codigo para o esp32 no qual os movimentos captados pelo kinect são enviado para o servo motor permitindu-o movimentar. O codigo no arquivo "Código ESP32"
    
 
